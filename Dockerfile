@@ -1,16 +1,17 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
-ENV POETRY_VERSION=1.8.2
+ENV POETRY_VERSION=2.1.0
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3-dev \
+    libpq-dev \
+    curl \
+    && curl -sSL https://install.python-poetry.org | python3 - --version $POETRY_VERSION \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV PATH="/root/.local/bin:$PATH"
 
-RUN apt-get update && apt-get install -y \
-    curl \
-    build-essential \
-    libpq-dev \
-    python3-dev \
-    && curl -sSL https://install.python-poetry.org | python3 - \
-    && poetry config virtualenvs.create false \
-    && rm -rf /var/lib/apt/lists/*
+WORKDIR /project
 
-WORKDIR /app
+CMD ["sleep", "infinity"]
